@@ -11,6 +11,7 @@ find_package(catkin REQUIRED COMPONENTS
   std_msgs
   tf
   dynamic_reconfigure
+  message_generation
 )
 
 generate_dynamic_reconfigure_options(
@@ -52,11 +53,12 @@ generate_dynamic_reconfigure_options(
 ##   * add every package in MSG_DEP_SET to generate_messages(DEPENDENCIES ...)
 
 ## Generate messages in the 'msg' folder
-# add_message_files(
-#   FILES
+ add_message_files(
+   FILES
+    PressureControl.msg
 #   Message1.msg
 #   Message2.msg
-# )
+ )
 
 ## Generate services in the 'srv' folder
 # add_service_files(
@@ -73,10 +75,11 @@ generate_dynamic_reconfigure_options(
 # )
 
 ## Generate added messages and services with any dependencies listed here
-# generate_messages(
-#   DEPENDENCIES
-#   std_msgs
-# )
+ generate_messages(
+   DEPENDENCIES
+   std_msgs
+   
+ )
 
 ###################################
 ## catkin specific configuration ##
@@ -90,7 +93,7 @@ generate_dynamic_reconfigure_options(
 catkin_package(
 #  INCLUDE_DIRS include
 #  LIBRARIES kcl_sbc
-  CATKIN_DEPENDS bhand_controller roscpp rospy std_msgs tf dynamic_reconfigure
+  CATKIN_DEPENDS bhand_controller roscpp rospy std_msgs tf dynamic_reconfigure message_runtime
 #  DEPENDS system_lib
 )
 
