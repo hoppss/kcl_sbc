@@ -1,0 +1,18 @@
+<launch>
+<rosparam command="load" file="$(find kcl_sbc)/config/sensor_params.yaml" />
+<env name="ROS_MASTER_URI" value="http://emannuele:11311"/>
+<arg name="novis" default="true" /> 
+  <machine name="oldpc" address="robotics" env-loader="/home/robotics/Documents/ros_code/devel/env.sh" user="robotics"/>
+  <machine name="emannuele" address="emannuele" env-loader="/home/emannuele/ros_ws/devel/env.sh" user="core"/>
+
+	<group ns="rfdistal">
+   	   <node machine="oldpc" name="sensor" pkg="sr_grasp_tactile" type="daq_sensor"/>
+	   <node machine="oldpc" name="contloc" pkg="sr_grasp_tactile" type="contloc"/>
+	   <node name="vis" pkg="sr_grasp_tactile" type="visualiser" unless="$(arg novis)"/>
+    	   </group>
+	<group ns="thdistal">
+       <node machine="oldpc" name="sensor" pkg="sr_grasp_tactile" type="daq_sensor"/>
+	   <node machine="oldpc" name="contloc" pkg="sr_grasp_tactile" type="contloc"/>
+	   <node name="vis" pkg="sr_grasp_tactile" type="visualiser" unless="$(arg novis)"/>	   
+	</group>
+</launch>
