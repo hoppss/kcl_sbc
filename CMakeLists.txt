@@ -16,6 +16,8 @@ find_package(catkin REQUIRED COMPONENTS
 
 generate_dynamic_reconfigure_options(
   cfg/pressure_reg_params.cfg
+  cfg/pid_params.cfg
+  cfg/sbc_params.cfg
 )
 
 
@@ -56,7 +58,7 @@ generate_dynamic_reconfigure_options(
  add_message_files(
    FILES
     PressureControl.msg
-#   Message1.msg
+    SBC_Output.msg
 #   Message2.msg
  )
 
@@ -78,7 +80,7 @@ generate_dynamic_reconfigure_options(
  generate_messages(
    DEPENDENCIES
    std_msgs
-   
+   geometry_msgs   
  )
 
 ###################################
@@ -91,7 +93,7 @@ generate_dynamic_reconfigure_options(
 ## CATKIN_DEPENDS: catkin_packages dependent projects also need
 ## DEPENDS: system dependencies of this project that dependent projects also need
 catkin_package(
-#  INCLUDE_DIRS include
+  INCLUDE_DIRS include
 #  LIBRARIES kcl_sbc
   CATKIN_DEPENDS bhand_controller roscpp rospy std_msgs tf dynamic_reconfigure message_runtime
 #  DEPENDS system_lib
@@ -106,6 +108,7 @@ catkin_package(
 ## Your package locations should be listed before other locations
 # include_directories(include)
 include_directories(
+  include
   ${catkin_INCLUDE_DIRS}
 )
 
@@ -115,17 +118,20 @@ include_directories(
 # )
 
 ## Declare a cpp executable
-# add_executable(kcl_sbc_node src/kcl_sbc_node.cpp)
+add_executable(bhand_pid src/bhand_pid.cpp)
+add_executable(bhand_sbc src/bhand_sbc.cpp)
+add_executable(newhand src/newhand.cpp src/BHand.cpp)
 
 ## Add cmake target dependencies of the executable/library
 ## as an example, message headers may need to be generated before nodes
-# add_dependencies(kcl_sbc_node kcl_sbc_generate_messages_cpp)
+ add_dependencies(bhand_pid kcl_sbc_generate_messages_cpp)
+ add_dependencies(bhand_sbc kcl_sbc_generate_messages_cpp)
+
 
 ## Specify libraries to link a library or executable target against
-# target_link_libraries(kcl_sbc_node
-#   ${catkin_LIBRARIES}
-# )
-
+ target_link_libraries(bhand_pid   ${catkin_LIBRARIES} )
+target_link_libraries(bhand_sbc ${catkin_LIBRARIES} )
+target_link_libraries(newhand ${catkin_LIBRARIES} )
 #############
 ## Install ##
 #############

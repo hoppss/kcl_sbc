@@ -1,0 +1,16 @@
+Header header
+float64 p_demand
+float64 p_measure
+float64 Fn1
+float64 Fn2
+float64 Ft1
+float64 Ft2
+float64 Pfailure
+float64 P_Gain
+float64 I_Gain
+float64 D_Gain
+float64 Beta
+float64 Delta
+float64 Eta
+geometry_msgs/Vector3 contact1
+geometry_msgs/Vector3 contact2

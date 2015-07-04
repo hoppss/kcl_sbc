@@ -1,0 +1,14 @@
+<launch>
+<rosparam command="load" file="$(find kcl_sbc)/config/sensor_params.yaml" />
+<env name="ROS_MASTER_URI" value="http://emannuele:11311"/>
+<arg name="novis" default="true" /> 
+  <machine name="oldpc" address="robotics" env-loader="/home/robotics/Documents/ros_code/devel/env.sh" user="robotics"/>
+  <machine name="emannuele" address="emannuele-DQ57TM" env-loader="/home/emannuele/ros_ws/devel/env.sh" user="emannuele"/>
+
+	<group ns="finger1">
+  	   <node machine="emannuele" name="controller" pkg="kcl_sbc" type="bhand_pid"/>
+    </group>
+	<group ns="finger2">
+   	   <node machine="emannuele" name="controller" pkg="kcl_sbc" type="bhand_pid"/>
+    </group>
+</launch>

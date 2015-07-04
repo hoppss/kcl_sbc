@@ -5,12 +5,12 @@
   <machine name="oldpc" address="robotics" env-loader="/home/robotics/Documents/ros_code/devel/env.sh" user="robotics"/>
   <machine name="emannuele" address="emannuele" env-loader="/home/emannuele/ros_ws/devel/env.sh" user="core"/>
 
-	<group ns="rfdistal">
+	<group ns="finger1">
    	   <node machine="oldpc" name="sensor" pkg="sr_grasp_tactile" type="daq_sensor"/>
 	   <node machine="oldpc" name="contloc" pkg="sr_grasp_tactile" type="contloc"/>
 	   <node name="vis" pkg="sr_grasp_tactile" type="visualiser" unless="$(arg novis)"/>
     	   </group>
-	<group ns="thdistal">
+	<group ns="finger2">
        <node machine="oldpc" name="sensor" pkg="sr_grasp_tactile" type="daq_sensor"/>
 	   <node machine="oldpc" name="contloc" pkg="sr_grasp_tactile" type="contloc"/>
 	   <node name="vis" pkg="sr_grasp_tactile" type="visualiser" unless="$(arg novis)"/>	   
