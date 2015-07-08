@@ -5,10 +5,13 @@
   <machine name="oldpc" address="robotics" env-loader="/home/robotics/Documents/ros_code/devel/env.sh" user="robotics"/>
   <machine name="emannuele" address="emannuele-DQ57TM" env-loader="/home/emannuele/ros_ws/devel/env.sh" user="emannuele"/>
 
-	<group ns="finger1">
-  	   <node machine="emannuele" name="controller" pkg="kcl_sbc" type="bhand_pid"/>
-    </group>
-	<group ns="finger2">
-   	   <node machine="emannuele" name="controller" pkg="kcl_sbc" type="bhand_pid"/>
-    </group>
+
+  <param name="robot_description"
+    command="$(find xacro)/xacro.py '$(find bhand_description)/urdf/bh_alone.urdf.xacro'" />
+  <node name="robot_state_publisher" pkg="robot_state_publisher" type="state_publisher"/>
+  <node name="static_tf1" pkg="tf" type="static_transform_publisher" args="-0.035, 0.026, 0.000 0.873  -0.000, -1.570 /bh_finger_13_link /finger1 1"/>
+  <node name="static_tf2" pkg="tf" type="static_transform_publisher" args="-0.035, 0.026, 0.000 0.873  -0.000, -1.570 /bh_finger_23_link /finger2 1"/>  
+  <node name="marker_viz" pkg="kcl_sbc" type="marker_viz"/>
+  <node name="collector" pkg="kcl_sbc" type="data_collector.py"/>    
+
 </launch>

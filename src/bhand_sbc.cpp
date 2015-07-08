@@ -43,8 +43,9 @@ double BHand_SBC::controller(double ref,double input){
     sF=sqrt(sF/(double) (current-1));
 
     P_failure=0.5*(1-erf((input-(ref+beta))/(sq2*sF)));
-
-
+    std_msgs::Float64 pfail;
+    pfail.data=P_failure;
+    prob_pub.publish(pfail);
     double command=eta*(P_failure-delta);
 
 
@@ -57,10 +58,12 @@ double BHand_SBC::controller(double ref,double input){
 }
 
 void BHand_SBC::ft_cb1(const sr_grasp_msgs::KCL_ContactStateStamped &msg){
+    //double ft=sqrt(msg.tangential_force.x*msg.tangential_force.y+msg.tangential_force.y*msg.tangential_force.y+msg.tangential_force.z*msg.tangential_force.z);
+
     command1=controller(this->f_ref, -msg.Fnormal);
     ROS_INFO_THROTTLE(0.5,"command1: %f %f %f ",cur_joints.position.at(this->motor_index),joint_command.position.at(this->motor_index),command1);
 }
-void BHand_SBC::ft_cb2(const sr_grasp_msgs::KCL_ContactStateStamped &msg){
+void BHand_SBC::ft_cb2(const sr_grasp_msgs::KCL_ContactStateStamped &msg){    
     command2=controller(this->f_ref, -msg.Fnormal);
     ROS_INFO_THROTTLE(0.5,"command2: %f %f %f ",cur_joints.position.at(this->motor_index),joint_command.position.at(this->motor_index),command2);
 }
@@ -71,7 +74,13 @@ void BHand_SBC::js_cb(const sensor_msgs::JointState &msg){
 
 
 
+double BHand_SBC::controller_p(double ref,double input){
 
+        double e=ref-input;
+
+            return 0.5*e;
+
+}
 
 int main(int argc, char **argv) {
     ros::init(argc, argv, "bhand_sbc");
@@ -83,11 +92,13 @@ int main(int argc, char **argv) {
     dynamic_reconfigure::Server<kcl_sbc::SBC_paramsConfig> server;
     server.setCallback(boost::bind(&BHand_SBC::reconf_callback, bh,_1, _2));
     ros::Subscriber ft_sub1 = bh->nh.subscribe("/finger1/ContactState", 1000, &BHand_SBC::ft_cb1, bh);
-    ros::Subscriber ft_sub2 = bh->nh.subscribe("/finger2/ContactState", 1000, &BHand_SBC::ft_cb2, bh);
+    //ros::Subscriber ft_sub2 = bh->nh.subscribe("/finger2/ContactState", 1000, &BHand_SBC::ft_cb2, bh);
 
     bh->jcom_pub= bh->nh.advertise<sensor_msgs::JointState>("/bhand_node/command",10);
     bh->pos_con_pub= bh->nh.advertise<std_msgs::Float64>(bh->control_topic,10);
     bh->com_pub= bh->nh.advertise<std_msgs::Float64>("hand_command",10);
+    bh->prob_pub= bh->nh.advertise<std_msgs::Float64>("prob_fail",10);
+
 
 
     ros::Rate rate(100);
@@ -122,7 +133,7 @@ int main(int argc, char **argv) {
             bh->joint_command.velocity.at(1)=bh->command1;
             bh->joint_command.velocity.at(2)=bh->command1;
 
-            double spread_com=bh->controller(PI/2,bh->cur_joints.position.at(6));
+            double spread_com=bh->controller_p(PI/2,bh->cur_joints.position.at(6));
             bh->joint_command.velocity.at(6)=spread_com;
             bh->joint_command.velocity.at(7)=spread_com;
 

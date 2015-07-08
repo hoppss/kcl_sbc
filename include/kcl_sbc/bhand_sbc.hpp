@@ -13,7 +13,7 @@
 #include <sr_grasp_msgs/KCL_ContactStateStamped.h>
 
 #define PI 3.14159265
-#define SAMPLES 1000
+#define SAMPLES 10000
 
 class BHand_SBC{
 public:
@@ -24,7 +24,8 @@ public:
     void ft_cb2(const sr_grasp_msgs::KCL_ContactStateStamped &msg);
     void js_cb(const sensor_msgs::JointState &msg);
     double controller(double ref,double input);
-    ros::Publisher jcom_pub,pos_con_pub,com_pub;
+    double controller_p(double ref,double input);
+    ros::Publisher jcom_pub,pos_con_pub,com_pub,prob_pub;
     double command1,command2;
     sensor_msgs::JointState joint_command,cur_joints;
     std::string control_topic;

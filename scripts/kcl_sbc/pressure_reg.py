@@ -41,7 +41,7 @@ class ComediIO():
 class Pressure_reg():
     def __init__(self):
         self.server = DynamicReconfigureServer(ConfigType, self.reconfigure)
-        self.pub = rospy.Publisher("topic",PressureControl )
+        self.pub = rospy.Publisher("pressure",PressureControl )
         self.com_io=ComediIO();
      
 

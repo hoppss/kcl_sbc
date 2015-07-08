@@ -7,12 +7,12 @@
 
 	<group ns="finger1">
    	   <node machine="oldpc" name="sensor" pkg="sr_grasp_tactile" type="daq_sensor"/>
-	   <node machine="oldpc" name="contloc" pkg="sr_grasp_tactile" type="contloc"/>
+	   <node machine="oldpc" name="contloc_old" pkg="sr_grasp_tactile" type="contloc_old" args="barrett 1"/>
 	   <node name="vis" pkg="sr_grasp_tactile" type="visualiser" unless="$(arg novis)"/>
     	   </group>
 	<group ns="finger2">
        <node machine="oldpc" name="sensor" pkg="sr_grasp_tactile" type="daq_sensor"/>
-	   <node machine="oldpc" name="contloc" pkg="sr_grasp_tactile" type="contloc"/>
+	   <node machine="oldpc" name="contloc_old" pkg="sr_grasp_tactile" type="contloc_old" args="barrett 2"/>
 	   <node name="vis" pkg="sr_grasp_tactile" type="visualiser" unless="$(arg novis)"/>	   
 	</group>
 </launch>

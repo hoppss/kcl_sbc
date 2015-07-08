@@ -132,6 +132,12 @@ add_executable(newhand src/newhand.cpp src/BHand.cpp)
  target_link_libraries(bhand_pid   ${catkin_LIBRARIES} )
 target_link_libraries(bhand_sbc ${catkin_LIBRARIES} )
 target_link_libraries(newhand ${catkin_LIBRARIES} )
+
+ add_executable(marker_viz src/marker_viz.cpp)
+ add_dependencies(marker_viz ${catkin_EXPORTED_TARGETS})
+target_link_libraries(marker_viz ${catkin_LIBRARIES})
+add_dependencies(marker_viz sr_grasp_msgs_generate_messages_cpp)
+
 #############
 ## Install ##
 #############
